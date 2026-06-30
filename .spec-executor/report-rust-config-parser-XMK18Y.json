@@ -1,0 +1,104 @@
+{
+  "deliverables": {
+    "aggregate": {
+      "failed": 0,
+      "passed": 2,
+      "total": 2,
+      "total_duration_ms": 71,
+      "verify_executed": 2,
+      "verify_passed": 2,
+      "warning_items": 0
+    },
+    "finished_at": "2026-06-30T05:36:30.687561+00:00",
+    "items": [
+      {
+        "duration_ms": 64,
+        "existence": "present_file",
+        "existence_detail": null,
+        "failure_detail": null,
+        "failure_reason": null,
+        "passed": true,
+        "path": "src/lib.rs",
+        "verify_command": "cargo test",
+        "verify_duration_ms": 64,
+        "verify_exit_code": 0,
+        "verify_signal": null,
+        "verify_stderr_tail": "    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.00s\n     Running unittests src/lib.rs (target/debug/deps/spec_executor_testing_05_rust_config-21414ba13d9f799c)\n     Running tests/acceptance_config.rs (target/debug/deps/acceptance_config-8e6edfc9ae3b0eb7)\n   Doc-tests spec_executor_testing_05_rust_config\n",
+        "verify_stdout_tail": "\nrunning 10 tests\ntest tests::empty_input_yields_empty_map ... ok\ntest tests::allows_empty_value ... ok\ntest tests::error_display_includes_line_number ... ok\ntest tests::errors_when_separator_missing ... ok\ntest tests::parses_multiple_lines_ignoring_comments_and_blanks ... ok\ntest tests::parses_single_line ... ok\ntest tests::errors_when_key_is_empty ... ok\ntest tests::later_keys_override_earlier_ones ... ok\ntest tests::trims_key_and_value_whitespace ... ok\ntest tests::value_may_contain_separator ... ok\n\ntest result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 4 tests\ntest error_display_contains_line_number ... ok\ntest parses_full_config_with_comments_blanks_and_trim ... ok\ntest reports_line_number_for_empty_key ... ok\ntest reports_line_number_for_missing_separator ... ok\n\ntest result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
+        "verify_timed_out": false,
+        "warnings": []
+      },
+      {
+        "duration_ms": 6,
+        "existence": "present_file",
+        "existence_detail": null,
+        "failure_detail": null,
+        "failure_reason": null,
+        "passed": true,
+        "path": "docs/DELIVERY.md",
+        "verify_command": "test -s docs/DELIVERY.md && grep -q \"^执行结果：通过$\" docs/DELIVERY.md",
+        "verify_duration_ms": 6,
+        "verify_exit_code": 0,
+        "verify_signal": null,
+        "verify_stderr_tail": "",
+        "verify_stdout_tail": "",
+        "verify_timed_out": false,
+        "warnings": []
+      }
+    ],
+    "not_run_reason": null,
+    "started_at": "2026-06-30T05:36:30.615872+00:00",
+    "verification": "ran"
+  },
+  "generated_at": "2026-06-30T05:36:30.611052+00:00",
+  "merging": {
+    "attempted": false,
+    "base_branch": null,
+    "conflict": null,
+    "merge_commit_sha": null,
+    "merged_at": null,
+    "push_detail": null,
+    "push_status": "not_attempted",
+    "pushed": false,
+    "result": "skipped",
+    "skip_reason": "skipped",
+    "source_branch": "spec-exec/rust-config-parser-XMK18Y"
+  },
+  "metadata": {
+    "duration_ms": 140130,
+    "executor": "claude",
+    "finished_at": "2026-06-30T05:36:30.611052+00:00",
+    "log_dir": "/private/tmp/se-realtest/ws-05/.logs/rust-config-parser-XMK18Y",
+    "mode": "worktree",
+    "repo_branch_base": "main",
+    "repo_branch_worktree": "spec-exec/rust-config-parser-XMK18Y",
+    "repo_url": "https://github.com/innuama-coder/spec-executor-testing-05-rust-config.git",
+    "session_id": "rust-config-parser-XMK18Y",
+    "started_at": "2026-06-30T05:34:10.480558+00:00",
+    "task_name": "rust-config-parser",
+    "worktree_path": "/private/tmp/se-realtest/ws-05/.spec-executor-worktrees/rust-config-parser-XMK18Y"
+  },
+  "monitoring": {
+    "consecutive_escalate": 0,
+    "decision_done": 1,
+    "decision_escalate_normalized": 0,
+    "decision_fallback_used": 0,
+    "decision_nudge": 0,
+    "decision_timeout": 0,
+    "decision_total": 1,
+    "idle_timeout_hits": 1,
+    "last_decision_action": "done",
+    "last_decision_text": "Task complete. Crunched for 1m 38s. Summary covers all error boundaries and constraint compliance.",
+    "monitoring_finished_at": "2026-06-30T05:36:30.611052+00:00",
+    "monitoring_started_at": "2026-06-30T05:34:31.517247+00:00",
+    "nudge_count": 0,
+    "poll_count": 14
+  },
+  "schema_version": "spec-executor-report/2.0",
+  "spec_executor_version": "2.2.7",
+  "status": {
+    "failure_category": null,
+    "failure_detail": null,
+    "result": "passed"
+  }
+}
