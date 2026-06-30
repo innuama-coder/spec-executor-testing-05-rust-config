@@ -50,8 +50,11 @@
 
 ## Merging Result
 
-**Result:** — Skipped
+**Result:** ✓ Merged
 
-- **Reason:** `skipped`
-- **Worktree status:** `kept_for_manual_review`
+- **Source branch:** `spec-exec/rust-config-parser-XMK18Y`
+- **Target branch:** `main`
+- **Merge commit:** `32136c29f51c9df9dcf494880266e91dfb35a35d`
+- **Merged at:** `2026-06-30T05:36:31.326506+00:00`
+- **Push:** `pushed` to `origin`
 
