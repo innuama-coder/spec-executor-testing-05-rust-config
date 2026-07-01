@@ -1,10 +1,10 @@
 version: "2.3"
-name: "rust-config-parser"
+name: "rust-config-env-required-missing"
 repo:
   url: "https://github.com/innuama-coder/spec-executor-testing-05-rust-config.git"
   branch: "main"
-task_dir: "tasks/development"
-executor: "claude"
+task_dir: "tasks/env-required-missing"
+executor: "codex"
 execution:
   poll_interval_sec: 2
   idle_timeout_sec: 90
@@ -13,16 +13,16 @@ execution:
   max_consecutive_escalate: 2
   env:
     file: "ENV"
-    required: false
+    required: true
     privacy: "redacted"
   agent:
-    id: "rust-config-agent"
-    name: "rust-config-agent"
-    role: "实现 Rust 配置解析库，保持测试和交付说明一致。"
+    id: "env-diagnostic-agent"
+    name: "env-diagnostic-agent"
+    role: "验证 ENV 必需但缺失时的 pre-JOB 诊断边界。"
     model:
       preference: "default"
     instructions:
-      - "Claude Agent 映射、review 迭代、2.3 optional ENV no-op。"
+      - "ENV required missing pre-JOB typed diagnostic；该任务包预期在 run 前失败且不创建 JOB。"
       - "严格遵守任务包中的 PROMPT、AGENTS、CLAUDE 与 docs 上下文。"
       - "ENV 仅用于进程环境注入，不得作为上下文文件读取或在默认输出中泄漏变量值。"
       - "若存在 review items，必须在同一 JOB 内完成修复、验证和交付说明更新。"
@@ -45,17 +45,7 @@ execution:
       approval: "on-request"
   review:
     max_iterations: 2
-    items:
-      - id: "REV-CONFIG-001"
-        source: "external-review"
-        severity: "should"
-        target: "docs/DELIVERY.md"
-        description: "交付说明需要解释配置解析的边界条件。"
-        expected_fix: "补充空值、重复 key 或非法行的处理说明。"
-        evidence_refs:
-          - "PROMPT.md"
-        acceptance:
-          command: "grep -q \"执行结果：通过\" docs/DELIVERY.md"
+    items: []
   lifecycle:
     resume:
       require_same_job: true
@@ -69,15 +59,12 @@ execution:
 verification:
   pass_threshold: 1
   commands:
-    - "cargo test"
-    - "test -s docs/DELIVERY.md && grep -q \"^执行结果：通过$\" docs/DELIVERY.md"
+    - "test -s docs/DELIVERY.md"
 reporting:
   format: "markdown"
   include_evidence_refs: true
   redact_env_values: true
   include_handoff: true
 deliverables:
-  - path: "src/lib.rs"
-    verify: "cargo test"
   - path: "docs/DELIVERY.md"
-    verify: "test -s docs/DELIVERY.md && grep -q \"^执行结果：通过$\" docs/DELIVERY.md"
+    verify: "test -s docs/DELIVERY.md"
