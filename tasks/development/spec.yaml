@@ -4,80 +4,61 @@ repo:
   url: "https://github.com/innuama-coder/spec-executor-testing-05-rust-config.git"
   branch: "main"
 task_dir: "tasks/development"
-executor: "claude"
+deliverables:
+- path: "src/lib.rs"
+  verify: "cargo test"
+- path: "docs/DELIVERY.md"
+  verify: "test -s docs/DELIVERY.md && grep -q \"^执行结果：通过$\" docs/DELIVERY.md"
 execution:
+  executor: "claude"
   poll_interval_sec: 2
   idle_timeout_sec: 90
-  max_duration_min: 15
-  max_nudge_count: 3
   max_consecutive_escalate: 2
-  env:
-    file: "ENV"
-    required: false
-    privacy: "redacted"
   agent:
-    id: "rust-config-agent"
     name: "rust-config-agent"
     role: "实现 Rust 配置解析库，保持测试和交付说明一致。"
-    model:
-      preference: "default"
     instructions:
-      - "Claude Agent 映射、review 迭代、2.3 optional ENV no-op。"
-      - "严格遵守任务包中的 PROMPT、AGENTS、CLAUDE 与 docs 上下文。"
-      - "ENV 仅用于进程环境注入，不得作为上下文文件读取或在默认输出中泄漏变量值。"
-      - "若存在 review items，必须在同一 JOB 内完成修复、验证和交付说明更新。"
+      primary: PROMPT.md
+      system: AGENTS.md
+      additional:
+      - "CLAUDE.md"
     context:
-      files:
-        - "PROMPT.md"
-        - "AGENTS.md"
-        - "CLAUDE.md"
-      exclude:
-        - "ENV"
+    - path: "PROMPT.md"
+      required: true
+    - path: "AGENTS.md"
+      required: true
+    - path: "CLAUDE.md"
+      required: true
     tools:
       allow:
-        - "shell"
-        - "apply_patch"
+      - "shell"
+      - "apply_patch"
       deny:
-        - "network"
+      - "network"
     permissions:
-      filesystem: "workspace-write"
-      network: "deny"
+      sandbox: "workspace-write"
       approval: "on-request"
+      network: false
+    model:
+      preferred: "default"
   review:
     max_iterations: 2
     items:
-      - id: "REV-CONFIG-001"
-        source: "external-review"
-        severity: "should"
-        target: "docs/DELIVERY.md"
-        description: "交付说明需要解释配置解析的边界条件。"
-        expected_fix: "补充空值、重复 key 或非法行的处理说明。"
-        evidence_refs:
-          - "PROMPT.md"
-        acceptance:
-          command: "grep -q \"执行结果：通过\" docs/DELIVERY.md"
-  lifecycle:
-    resume:
-      require_same_job: true
-    monitoring:
-      busy_side_effect: "observe_only"
-      source_degraded_policy: "bounded_failure"
-      screen_capture_semantic_fallback: false
-    capture:
-      default_raw_output: false
-      failure_evidence: true
+    - id: "REV-CONFIG-001"
+      source: "external-review"
+      severity: "should"
+      target: "docs/DELIVERY.md"
+      issue: "交付说明需要解释配置解析的边界条件。"
+      expected_fix: "补充空值、重复 key 或非法行的处理说明。"
+      acceptance: "grep -q \"执行结果：通过\" docs/DELIVERY.md"
 verification:
-  pass_threshold: 1
   commands:
-    - "cargo test"
-    - "test -s docs/DELIVERY.md && grep -q \"^执行结果：通过$\" docs/DELIVERY.md"
+  - "cargo test"
+  - "test -s docs/DELIVERY.md && grep -q \"^执行结果：通过$\" docs/DELIVERY.md"
 reporting:
-  format: "markdown"
   include_evidence_refs: true
-  redact_env_values: true
-  include_handoff: true
-deliverables:
-  - path: "src/lib.rs"
-    verify: "cargo test"
-  - path: "docs/DELIVERY.md"
-    verify: "test -s docs/DELIVERY.md && grep -q \"^执行结果：通过$\" docs/DELIVERY.md"
+  handoff_required: true
+package:
+  env:
+    path: "ENV"
+    required: false

@@ -4,67 +4,51 @@ repo:
   url: "https://github.com/innuama-coder/spec-executor-testing-05-rust-config.git"
   branch: "main"
 task_dir: "tasks/env-required-missing"
-executor: "codex"
+deliverables:
+- path: "docs/DELIVERY.md"
+  verify: "test -s docs/DELIVERY.md"
 execution:
+  executor: "codex"
   poll_interval_sec: 2
   idle_timeout_sec: 90
-  max_duration_min: 15
-  max_nudge_count: 3
   max_consecutive_escalate: 2
-  env:
-    file: "ENV"
-    required: true
-    privacy: "redacted"
   agent:
-    id: "env-diagnostic-agent"
     name: "env-diagnostic-agent"
     role: "验证 ENV 必需但缺失时的 pre-JOB 诊断边界。"
-    model:
-      preference: "default"
     instructions:
-      - "ENV required missing pre-JOB typed diagnostic；该任务包预期在 run 前失败且不创建 JOB。"
-      - "严格遵守任务包中的 PROMPT、AGENTS、CLAUDE 与 docs 上下文。"
-      - "ENV 仅用于进程环境注入，不得作为上下文文件读取或在默认输出中泄漏变量值。"
-      - "若存在 review items，必须在同一 JOB 内完成修复、验证和交付说明更新。"
+      primary: PROMPT.md
+      system: AGENTS.md
+      additional:
+      - "CLAUDE.md"
     context:
-      files:
-        - "PROMPT.md"
-        - "AGENTS.md"
-        - "CLAUDE.md"
-      exclude:
-        - "ENV"
+    - path: "PROMPT.md"
+      required: true
+    - path: "AGENTS.md"
+      required: true
+    - path: "CLAUDE.md"
+      required: true
     tools:
       allow:
-        - "shell"
-        - "apply_patch"
+      - "shell"
+      - "apply_patch"
       deny:
-        - "network"
+      - "network"
     permissions:
-      filesystem: "workspace-write"
-      network: "deny"
+      sandbox: "workspace-write"
       approval: "on-request"
+      network: false
+    model:
+      preferred: "default"
   review:
     max_iterations: 2
     items: []
-  lifecycle:
-    resume:
-      require_same_job: true
-    monitoring:
-      busy_side_effect: "observe_only"
-      source_degraded_policy: "bounded_failure"
-      screen_capture_semantic_fallback: false
-    capture:
-      default_raw_output: false
-      failure_evidence: true
 verification:
-  pass_threshold: 1
   commands:
-    - "test -s docs/DELIVERY.md"
+  - "test -s docs/DELIVERY.md"
 reporting:
-  format: "markdown"
   include_evidence_refs: true
-  redact_env_values: true
-  include_handoff: true
-deliverables:
-  - path: "docs/DELIVERY.md"
-    verify: "test -s docs/DELIVERY.md"
+  handoff_required: true
+package:
+  env:
+    path: "ENV"
+    required: true
